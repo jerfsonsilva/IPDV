@@ -1,9 +1,6 @@
 # Teste IPDV
 
 ## Bem vindo(a)
-```
-npm install
-```
 
 ## Este projeto foi dividido em três etapas
 
@@ -106,3 +103,9 @@ App running at:
   - Network: http://192.168.0.109:8080/
 ```
 
+## usuario e senha para testes
+
+```
+    email:jerfsonlink@gmail.com
+    senha:123
+```

@@ -35,8 +35,6 @@ class UserController {
         var { email, nome, password, FKIDcargo, FKIDdepartamento } = req.body;
 
         //Validação
-
-
         if (FKIDdepartamento == undefined) {
             res.status(403);//Requisição invalida
             res.json({ err: "O departamento é obrigatorio" });
