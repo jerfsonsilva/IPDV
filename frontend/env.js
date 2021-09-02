@@ -1,4 +1,3 @@
 module.exports = {//Variaveis de ambiente
-    urlServidorBack:"http://localhost:8686",//Link servidor backend
-    
+    urlServidorBack:"http://localhost:9090",//Link servidor backend
 }

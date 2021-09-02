@@ -53,6 +53,7 @@
 
 <script>
 import axios from "axios";
+import env from "../../../env";
 export default {
   data() {
     return {
@@ -64,7 +65,7 @@ export default {
     logar(e) {
       e.preventDefault();
       axios
-        .post("http://localhost:8686/login", {
+        .post(env.urlServidorBack+"/login", {
           password: this.password,
           email: this.email,
         })

@@ -14,6 +14,8 @@ import ListaCentroCusto from '../views/centroCusto/Lista'
 import CadastroDepartamento from '../views/departamento/Cadastro'
 import ListaDepartamento from '../views/departamento/Lista'
 
+import env from "../../env";
+
 Vue.use(VueRouter)
 import axios from "axios";
 
@@ -121,7 +123,7 @@ function userLogado(to,from,next) {//Middleware verificar se o usuario esta loga
     }
 
     axios
-      .post("http://localhost:8686/validate",{}, req) //validar token de usuario
+      .post(env.urlServidorBack+"/validate",{}, req) //validar token de usuario
       .then((res) => {
         console.log(res);
         next();

@@ -5,21 +5,21 @@
 npm install
 ```
 
-## Este projeto foi dividido em tres etapas
+## Este projeto foi dividido em três etapas
 
-## 1º) etapa - banco de dados localizado na pasta "/databaseipdv" contendo o script mysql e diagrama uml da aplicação
+## 1º) etapa - banco de dados localizado na pasta "/database" contendo o script mysql e diagrama uml da aplicação
 
 ```
-cd /databaseipdv
+cd /database
 ```
 
 ### basta importar o ipvd.sql para a sua maquina local e está configurado essa etapa
 
 
-## 2º) etapa - O backend localizado na pasta "/backendipdv" construido utilizando o node js e conceitos de RestAPI
+## 2º) etapa - O backend localizado na pasta "/backend" construido utilizando o node js e conceitos de RestAPI
 
 ```
-cd /backendipdv
+cd /backend
 ```
 
 ### As dependencias estão localizadas no arquivo package.json
@@ -40,11 +40,11 @@ cd /backendipdv
     npm install
 ```
 
-### O arquivo "env.js" é responsavel pelas variaveis de ambientes sendo necessario configurar informações sobre o banco de dados e porta em que o servidor do backend ira rodar
+### O arquivo "env.js" é responsavel pelas variaveis de ambientes sendo necessario configurar informações sobre o banco de dados e a porta em que o servidor do backend ira rodar
 
 ```
 module.exports = {//Variaveis de ambiente
-    portaServidor:8686,//Porta de servidor
+    portaServidor:9090,//Porta de servidor
     conexao: {//Variaveis de conexão com o banco
         host : '127.0.0.1',
         user : 'root',
@@ -64,10 +64,10 @@ node index.js
 ### e o servidor do backend estara pronto
 
 
-## 3º) etapa - O frontend localizado na pasta "/frontendipdv"
+## 3º) etapa - O frontend localizado na pasta "/frontend"
 
 ```
-cd /frontendipdv
+cd /frontend
 ```
 
 ### As dependencias estão localizadas no arquivo package.json
@@ -89,7 +89,7 @@ cd /frontendipdv
 
 ```
 module.exports = {//Variaveis de ambiente
-    urlServidorBack:"http://localhost:8686",//Link servidor backend
+    urlServidorBack:"http://localhost:9090",//Link servidor backend
 }
 ```
 ### apos a configuração basta rodar o comando:
