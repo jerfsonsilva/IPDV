@@ -9,11 +9,7 @@
           <a class="button is-info is-small mt-2" href="/user/novo"
             >Cadastrar +
           </a>
-          <a class="button is-info is-small mt-2" href="/user/novo"
-            > 
-            Importar usuarios 
-
-          </a>
+          
         </header>
         <div class="card-content">
           <div class="column is-offset-9 is-one-quarter">
