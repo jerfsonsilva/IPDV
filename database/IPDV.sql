@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Tempo de geração: 02-Set-2021 às 09:38
+-- Tempo de geração: 02-Set-2021 às 15:59
 -- Versão do servidor: 8.0.26-0ubuntu0.20.04.2
 -- versão do PHP: 7.4.3
 
@@ -21,67 +21,6 @@ SET time_zone = "+00:00";
 --
 -- Banco de dados: `ipvdteste`
 --
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `Cargo`
---
-
-CREATE TABLE `Cargo` (
-  `id` int NOT NULL,
-  `descricao` varchar(255) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
-
---
--- Extraindo dados da tabela `Cargo`
---
-
-INSERT INTO `Cargo` (`id`, `descricao`) VALUES
-(1, 'Programador web'),
-(3, '123456'),
-(6, 'Engenheuiro1234534'),
-(7, 'Havai');
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `CentroCusto`
---
-
-CREATE TABLE `CentroCusto` (
-  `id` int NOT NULL,
-  `descricao` varchar(255) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
-
---
--- Extraindo dados da tabela `CentroCusto`
---
-
-INSERT INTO `CentroCusto` (`id`, `descricao`) VALUES
-(1, 'TI'),
-(3, 'Industrial');
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `Departamento`
---
-
-CREATE TABLE `Departamento` (
-  `id` int NOT NULL,
-  `descricao` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `FKIDcentroCusto` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
-
---
--- Extraindo dados da tabela `Departamento`
---
-
-INSERT INTO `Departamento` (`id`, `descricao`, `FKIDcentroCusto`) VALUES
-(1, 'Software', 1),
-(5, 'Energia', 3),
-(6, 'Orçamentos', 3);
 
 -- --------------------------------------------------------
 
@@ -114,53 +53,17 @@ INSERT INTO `Usuario` (`id`, `nome`, `email`, `password`, `FKIDcargo`, `FKIDdepa
 --
 
 --
--- Índices para tabela `Cargo`
---
-ALTER TABLE `Cargo`
-  ADD PRIMARY KEY (`id`);
-
---
--- Índices para tabela `CentroCusto`
---
-ALTER TABLE `CentroCusto`
-  ADD PRIMARY KEY (`id`);
-
---
--- Índices para tabela `Departamento`
---
-ALTER TABLE `Departamento`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `FKIDcentroCusto` (`FKIDcentroCusto`);
-
---
 -- Índices para tabela `Usuario`
 --
 ALTER TABLE `Usuario`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`),
   ADD KEY `FKIDcargo` (`FKIDcargo`),
   ADD KEY `FKIDdepartamento` (`FKIDdepartamento`);
 
 --
 -- AUTO_INCREMENT de tabelas despejadas
 --
-
---
--- AUTO_INCREMENT de tabela `Cargo`
---
-ALTER TABLE `Cargo`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
---
--- AUTO_INCREMENT de tabela `CentroCusto`
---
-ALTER TABLE `CentroCusto`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT de tabela `Departamento`
---
-ALTER TABLE `Departamento`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de tabela `Usuario`
@@ -171,12 +74,6 @@ ALTER TABLE `Usuario`
 --
 -- Restrições para despejos de tabelas
 --
-
---
--- Limitadores para a tabela `Departamento`
---
-ALTER TABLE `Departamento`
-  ADD CONSTRAINT `Departamento_ibfk_1` FOREIGN KEY (`FKIDcentroCusto`) REFERENCES `CentroCusto` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `Usuario`
