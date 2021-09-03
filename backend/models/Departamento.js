@@ -22,6 +22,16 @@ class Departamento{
             return [];
         }
     }
+    async findByDesc(id) {
+        try {
+            var result = await knex.select("id", "descricao","FKIDcentroCusto").where({ descricao: descricao }).table(nomeTabela);
+            if (result.length > 0) return result[0];
+            else return undefined;
+
+        } catch (error) {
+            return undefined;
+        }
+    }
     async findById(id) {
         try {
             var result = await knex.select("id", "descricao","FKIDcentroCusto").where({ id: id }).table(nomeTabela);
@@ -34,8 +44,8 @@ class Departamento{
     }
     async create(descricao,FKIDcentroCusto) {
         try {
-            await knex.insert({ descricao, FKIDcentroCusto }).table(nomeTabela);//Cadastrar novo
-            return true;
+            return await knex.insert({ descricao, FKIDcentroCusto }).table(nomeTabela);//Cadastrar novo
+          
 
         } catch (error) {
             console.log(error);

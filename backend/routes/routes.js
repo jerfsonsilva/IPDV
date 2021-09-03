@@ -15,6 +15,7 @@ router.get('/user',AdminAuth, UserController.index);
 router.get('/user/:id',AdminAuth, UserController.findOne);
 router.put('/user',AdminAuth, UserController.edit);
 router.delete('/user/:id',AdminAuth, UserController.delete);
+router.post('/user/importar', UserController.import);
 
 //Rotas de Cargos
 router.post('/cargo',AdminAuth, CargoController.create);

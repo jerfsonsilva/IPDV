@@ -28,6 +28,8 @@ cd /backend
     "express": "^4.17.1",//Estrutura de aplicativo da web leve para ajudar a organizar seu aplicativo da web
     "jsonwebtoken": "^8.5.1",//Padrão da Internet para a criação de dados com assinatura opcional
     "knex": "^0.95.10",//O query builder
+    "csv-reader": "^1.0.8",//Ler arquivo CSV
+    "formidable": "^1.2.2",//Ler arquivo FILE da requisição
     "mysql2": "^2.1.0" //Acesso ao banco Mysql
   }
 ```
@@ -75,6 +77,7 @@ cd /frontend
     "core-js": "^3.6.5",//É utilizado pelo Babel para garantir uma maior compatibilidade entre navegadores.
     "vue": "^2.6.11",//Construir a interface
     "vue-alertify": "^1.1.0",//Usado para criar alertas no sistema
+    "vue-js-modal": "^2.0.1",//Modal dinamico
     "vue-router": "^3.2.0"//Usado para gerenciar as rotas
 ```
 ### para instalar basta rodar o comando

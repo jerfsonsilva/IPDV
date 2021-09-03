@@ -6,10 +6,14 @@
       <div class="card">
         <header class="card-header">
           <p class="card-header-title">Lista de usuarios</p>
+
+          <a class="button is-primary is-small mt-2 mr-4" @click="importarUsuarios()"
+            >Importar usuarios
+          </a>
+
           <a class="button is-info is-small mt-2" href="/user/novo"
             >Cadastrar +
           </a>
-          
         </header>
         <div class="card-content">
           <div class="column is-offset-9 is-one-quarter">
@@ -59,6 +63,7 @@
 import axios from "axios";
 import env from "../../../env";
 import Navbar from "../../components/layout/Navbar.vue";
+import ImportarLista from "../../components/usuario/ImportarLista.vue";
 
 export default {
   data() {
@@ -76,11 +81,32 @@ export default {
     this.buscarUsuarios();
   },
   methods: {
+    importarUsuarios() {
+      this.$modal.show(
+        ImportarLista,
+        {
+          buscarUsuarios: this.buscarUsuarios,
+        },
+        {
+          height: "auto",
+          width: "50%",
+          classes: "modalDinamico modalDinamico-open",
+        }
+      );
+    },
     buscarUsuarios() {
-      axios.get(env.urlServidorBack + "/user"+(this.FKIDdepartamento!=""?"?FKIDdepartamento="+this.FKIDdepartamento:"")).then((response) => {
-        //Buscar servidores
-        this.lista = response.data;
-      });
+      axios
+        .get(
+          env.urlServidorBack +
+            "/user" +
+            (this.FKIDdepartamento != ""
+              ? "?FKIDdepartamento=" + this.FKIDdepartamento
+              : "")
+        )
+        .then((response) => {
+          //Buscar servidores
+          this.lista = response.data;
+        });
     },
     excluir(id, key) {
       var $this = this;

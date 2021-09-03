@@ -5,6 +5,24 @@
 </template>
 
 <style>
+.importado{
+  color: green;
+}
+
+.n-importado{
+  color: red;
+}
+.hidden{
+  display: none;
+}
+.modal-card {
+  width: 81%!important;
+  margin-top: 31px!important;
+}
+.modal-open {
+  display: block !important;
+}
+
 .editar {
   color: #42b983;
 }

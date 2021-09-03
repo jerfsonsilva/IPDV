@@ -1,4 +1,8 @@
 var usuario = require("../models/Usuario");
+var centroCusto = require("../models/CentroCusto");
+var departamento = require("../models/Departamento");
+var cargo = require("../models/Cargo");
+
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcrypt");
 var env = require("../env")
@@ -136,6 +140,95 @@ class UserController {
             res.status(403);
             res.json({ status: false, err: "Usuario não encontrado" });
         }
+
+    }
+
+    async import(req, res) {
+        var resultado = [];
+        var linhasArquivo = [];
+        const Fs = require('fs');
+        const CsvReadableStream = require('csv-reader');//Leitor de Csv
+
+        const formidable = require('formidable');//Responsavel pelo recebimento de arquivos da requisição
+        const form = new formidable.IncomingForm();
+
+        form.parse(req, (err, fields, files) => {//Receber arquivos do formulario
+
+            let inputStream = Fs.createReadStream(files.arquivo.path, 'utf8');
+
+            inputStream
+                .pipe(new CsvReadableStream({ parseNumbers: true, parseBooleans: true, trim: true }))
+                .on('data', async function (row) {
+                    if (row.length > 0 && row[0].toLowerCase() != 'nome' && row.length == 5) {
+                        let informacoes = {
+                            nome: row[0],
+                            email: row[1],
+                            cargo: row[2],
+                            departamento: row[3],
+                            centroCusto: row[4]
+                        };
+                        linhasArquivo.push(informacoes);
+                    }
+
+                })
+                .on('end', async function () {
+                    await Promise.all(linhasArquivo.map(async (informacoes) => { //Esperar respostas 
+                        if (informacoes.centroCusto != '') {
+                            //Verificar a existencia do centro de custo
+                            var centroObj = await centroCusto.findByDesc(informacoes.centroCusto);
+
+                            if (centroObj == undefined) //cadastrar centro
+                                informacoes.centroCustoid = await centroCusto.create(informacoes.centroCusto);
+                            else
+                                informacoes.centroCustoid = centroObj.id;
+
+                        }
+
+                        if (informacoes.cargo != '') {
+                            //Verificar a existencia do cargo
+                            var cargoObj = await cargo.findByDesc(informacoes.cargo);
+
+                            if (cargoObj == undefined) //cadastrar cargo
+                                informacoes.cargoid = await cargo.create(informacoes.cargo);
+                            else
+                                informacoes.cargoid = cargoObj.id;
+
+                        }
+
+                        if (informacoes.departamento != '' && informacoes.centroCusto != '') {
+                            //Verificar a existencia do departamento
+                            var departamentoObj = await departamento.findByDesc(informacoes.departamento);
+
+                            if (departamentoObj == undefined) //cadastrar departamento
+                                informacoes.departamentoid = await departamento.create(informacoes.departamento, informacoes.centroCustoid);
+                            else
+                                informacoes.departamentoid = departamentoObj.id;
+
+                        }
+                        if (informacoes.nome != '') {
+                            //Verificar a existencia do usuario
+                            var usuarioObj = await usuario.findByEmail(informacoes.email);
+
+                            if (usuarioObj == undefined) { //cadastrar usuario
+                                let idusuario = await usuario.create(informacoes.email, 'importado', informacoes.nome, informacoes.cargoid, informacoes.departamentoid);
+                                informacoes.status = idusuario ? true : false;
+                                informacoes.msg = idusuario ? 'Importado' : 'Erro ao importar';
+                            } else {
+                                informacoes.status = false;
+                                informacoes.msg = "Usuario já existe no banco";
+                            }
+                        } else {
+                            informacoes.status = false;
+                            informacoes.msg = "Usuario invalido";
+                        }
+                        //console.log(informacoes);
+                        resultado.push(informacoes);
+                    }));
+                    res.json({ status: true, lista: resultado });
+                });
+            console.log(resultado);
+
+        });
 
     }
 }
