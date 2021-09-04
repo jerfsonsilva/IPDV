@@ -172,61 +172,71 @@ class UserController {
 
                 })
                 .on('end', async function () {
-                    await Promise.all(linhasArquivo.map(async (informacoes) => { //Esperar respostas 
-                        if (informacoes.centroCusto != '') {
-                            //Verificar a existencia do centro de custo
-                            var centroObj = await centroCusto.findByDesc(informacoes.centroCusto);
+                    try {
 
-                            if (centroObj == undefined) //cadastrar centro
-                                informacoes.centroCustoid = await centroCusto.create(informacoes.centroCusto);
-                            else
-                                informacoes.centroCustoid = centroObj.id;
+                        for (let i = 0; i < linhasArquivo.length; i++) {//Executar de forma sincronizada
+                            var informacoes = linhasArquivo[i];
 
-                        }
+                            if (informacoes.centroCusto != '') {
+                                //Verificar a existencia do centro de custo
+                                var centroObj = await centroCusto.findByDesc(informacoes.centroCusto);
 
-                        if (informacoes.cargo != '') {
-                            //Verificar a existencia do cargo
-                            var cargoObj = await cargo.findByDesc(informacoes.cargo);
+                                if (centroObj == undefined) //cadastrar centro
+                                    informacoes.centroCustoid = await centroCusto.create(informacoes.centroCusto);
+                                else
+                                    informacoes.centroCustoid = centroObj.id;
 
-                            if (cargoObj == undefined) //cadastrar cargo
-                                informacoes.cargoid = await cargo.create(informacoes.cargo);
-                            else
-                                informacoes.cargoid = cargoObj.id;
+                            }
 
-                        }
+                            if (informacoes.cargo != '') {
+                                //Verificar a existencia do cargo
+                                var cargoObj = await cargo.findByDesc(informacoes.cargo);
 
-                        if (informacoes.departamento != '' && informacoes.centroCusto != '') {
-                            //Verificar a existencia do departamento
-                            var departamentoObj = await departamento.findByDesc(informacoes.departamento);
+                                if (cargoObj == undefined) //cadastrar cargo
+                                    informacoes.cargoid = await cargo.create(informacoes.cargo);
+                                else
+                                    informacoes.cargoid = cargoObj.id;
 
-                            if (departamentoObj == undefined) //cadastrar departamento
-                                informacoes.departamentoid = await departamento.create(informacoes.departamento, informacoes.centroCustoid);
-                            else
-                                informacoes.departamentoid = departamentoObj.id;
+                            }
 
-                        }
-                        if (informacoes.nome != '') {
-                            //Verificar a existencia do usuario
-                            var usuarioObj = await usuario.findByEmail(informacoes.email);
+                            if (informacoes.departamento != '' && informacoes.centroCustoid != undefined) {
+                                //Verificar a existencia do departamento
+                                var departamentoObj = await departamento.findByDesc(informacoes.departamento.toLowerCase());
 
-                            if (usuarioObj == undefined) { //cadastrar usuario
-                                let idusuario = await usuario.create(informacoes.email, 'importado', informacoes.nome, informacoes.cargoid, informacoes.departamentoid);
-                                informacoes.status = idusuario ? true : false;
-                                informacoes.msg = idusuario ? 'Importado' : 'Erro ao importar';
+                                if (departamentoObj == undefined) //cadastrar departamento
+                                    informacoes.departamentoid = await departamento.create(informacoes.departamento, informacoes.centroCustoid);
+                                else
+                                    informacoes.departamentoid = departamentoObj.id;
+
+                            }
+                            if (informacoes.nome != '') {
+                                //Verificar a existencia do usuario
+                                var usuarioObj = await usuario.findByEmail(informacoes.email);
+
+                                if (usuarioObj == undefined) { //cadastrar usuario
+                                    let idusuario = await usuario.create(informacoes.email, 'importado', informacoes.nome, informacoes.cargoid, informacoes.departamentoid);
+                                    informacoes.status = idusuario ? true : false;
+                                    informacoes.msg = idusuario ? 'Importado' : 'Erro ao importar';
+                                } else {
+                                    informacoes.status = false;
+                                    informacoes.msg = "Usuario já existe no banco";
+                                }
                             } else {
                                 informacoes.status = false;
-                                informacoes.msg = "Usuario já existe no banco";
+                                informacoes.msg = "Usuario invalido";
                             }
-                        } else {
-                            informacoes.status = false;
-                            informacoes.msg = "Usuario invalido";
+
+                            resultado.push(informacoes);
+
+                            // }));
                         }
-                        //console.log(informacoes);
-                        resultado.push(informacoes);
-                    }));
-                    res.json({ status: true, lista: resultado });
+                        res.json({ status: true, lista: resultado });
+                    } catch (e) {
+                        res.json({ status: false, lista: [] });
+                    }
+
                 });
-            console.log(resultado);
+
 
         });
 
