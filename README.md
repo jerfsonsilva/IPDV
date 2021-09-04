@@ -112,3 +112,11 @@ App running at:
     email:jerfsonlink@gmail.com
     senha:123
 ```
+
+## observações
+
+```
+   É aconselhado excluir a pasta 'node_modules' de ambos os projetos 'frontend' e 'backend' e executar o comando 'npm install', subi essas pastas no github por solicitação do cliente
+```
+
+## Fim ;)
