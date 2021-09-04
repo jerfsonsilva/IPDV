@@ -13,7 +13,7 @@ class Cargo {
             return [];
         }
     }
-    async findByDesc(id) {
+    async findByDesc(descricao) {
         try {
             var result = await knex.select("id", "descricao").where({ descricao: descricao }).table(nomeTabela);
             if (result.length > 0) return result[0];

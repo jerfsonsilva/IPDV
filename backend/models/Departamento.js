@@ -22,7 +22,7 @@ class Departamento{
             return [];
         }
     }
-    async findByDesc(id) {
+    async findByDesc(descricao) {
         try {
             var result = await knex.select("id", "descricao","FKIDcentroCusto").where({ descricao: descricao }).table(nomeTabela);
             if (result.length > 0) return result[0];
